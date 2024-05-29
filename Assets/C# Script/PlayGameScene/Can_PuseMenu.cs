@@ -21,8 +21,10 @@ public class Can_PuseMenu : MonoBehaviour
 
     public void btn_Resume()
     {
+        GameController.Instance.ButtonClickSound();
+
         Hide();
-        App.instance.Resume();
+        App.Instance.Resume();
     }
 
     internal void Show()
@@ -40,7 +42,9 @@ public class Can_PuseMenu : MonoBehaviour
 
     public void btn_BackToMenu()
     {
-        App.instance.Resume();
-        App.instance.Show_Menu();
+        GameController.Instance.ButtonClickSound();
+
+        App.Instance.Resume();
+        App.Instance.Show_Menu();
     }
 }

@@ -25,7 +25,7 @@ public class BlackHole : MonoBehaviour
             Donky.instance.onBlcakHole(GetComponent<CircleCollider2D>().bounds.center);
             GetComponent<AudioSource>().Play();
 
-            App.instance.SaveData();
+            App.Instance.SaveData();
             StartCoroutine(ExecuteAfterTime(0.5f, () =>
             {
                 Can_GameOver.instance.Show();

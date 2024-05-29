@@ -1,4 +1,6 @@
 using Assets;
+using Assets.DataLayer;
+using Assets.Script;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,28 +14,16 @@ public class ShareSocial : MonoBehaviour
 
     public void OnAndroidTextSharingClick()
     {
+        GameController.Instance.ButtonClickSound();
+
+
+
         subject = "Donkey Jump Play Now!";
-        string link = "";
-
-        switch (PulishFor.Pulish)
-        {
-            case Pulish.Playe:
-                link = "https://play.google.com/store/apps/details?id=" + Application.identifier;
-                break;
-            case Pulish.Myket:
-                link = "https://myket.ir/app/" + Application.identifier;
-                break;
-            case Pulish.Bazar:
-                link = "https://cafebazaar.ir/app/" + Application.identifier;
-                break;
-            default:
-                break;
-        }
-
+        string link = Helper.AppSharingLink();
 
         body = string.Format(
             "\nI reached to {0} m in action hero. Check out how far you go: \n" + link,
-            Progress.instance.Record);
+           ApplicationServices.playerInfoService.GetPlayerInfo().Record);
 
         StartCoroutine(ShareAndroidText());
     }

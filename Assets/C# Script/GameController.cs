@@ -6,8 +6,9 @@ using Realms;
 using UnityEngine.SceneManagement;
 using System;
 using Assets;
+using Assets.Script;
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
     public GameObject optionCanvas;
     public GameObject topScoreCanvas;
@@ -23,50 +24,52 @@ public class GameController : MonoBehaviour
 
     public static bool GameMute;
 
-    public static GameController instance;
-    private void Start()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
+    [SerializeField] AudioClip audioClip_Click;
+
     public void ButtonClickSound()
     {
-        buttonClickAudioSource.Play();
+        PlaySound(audioClip_Click);
+    }
+
+    public void PlaySound(AudioClip audioClip)
+    {
+        AudioSource source_ = gameObject.AddComponent<AudioSource>();
+        Destroy(source_, 3);
+        source_.clip = audioClip;
+        source_.volume = 1f;
+        source_.Play();
     }
 
     public void PlayButtonClick()
     {
-        buttonClickAudioSource.Play();
+        ButtonClickSound();
 
         SceneManager.LoadScene(1);
     }
 
-    public void OptionButtonClick()
-    {
-        buttonClickAudioSource.Play();
-        optionCanvas.SetActive(true);
-        optionCanvas_textUserName.text = Progress.instance._playerInfo.UserName;
-    }
-    public void optionCanvas_CloseButton()
-    {
-        buttonClickAudioSource.Play();
+    //public void OptionButtonClick()
+    //{
+    //    ButtonClickSound();
+    //    optionCanvas.SetActive(true);
+    //    optionCanvas_textUserName.text = Progress.Instance._playerInfo.UserName;
+    //}
+    //public void optionCanvas_CloseButton()
+    //{
+    //    ButtonClickSound();
+    //    if (optionCanvas_textUserName.text.Length > 0)
+    //    {
+    //        if (optionCanvas_textUserName.text != Progress.Instance._playerInfo.UserName)
+    //        {
+    //            Progress.Instance.SaveUserName(optionCanvas_textUserName.text);
+    //        }
+    //    }
 
-        if (optionCanvas_textUserName.text.Length > 0)
-        {
-            if (optionCanvas_textUserName.text != Progress.instance._playerInfo.UserName)
-            {
-                Progress.instance.SaveUserName(optionCanvas_textUserName.text);
-            }
-        }
-
-        optionCanvas.SetActive(false);
-    }
+    //    optionCanvas.SetActive(false);
+    //}
 
     public void optionCanvas_MiscOnOffButton()
     {
-        buttonClickAudioSource.Play();
+        ButtonClickSound();
 
         GameMute = !GameMute;
         if (GameMute)
@@ -84,47 +87,16 @@ public class GameController : MonoBehaviour
 
     public void Btn_TopScore()
     {
-        buttonClickAudioSource.Play();
+        ButtonClickSound();
 
         topScoreCanvas.SetActive(true);
     }
     public void Btn_CloseSection()
     {
-        buttonClickAudioSource.Play();
+        ButtonClickSound();
+
 
         topScoreCanvas.SetActive(false);
-    }
-    public void Contact()
-    {
-        try
-        {
-            string url = "";
-            switch (PulishFor.Pulish)
-            {
-                case Pulish.Playe:
-                    url = "market://details?id=" + Application.identifier;
-                    break;
-                case Pulish.Myket:
-                    url = "myket://comment?id=" + Application.identifier;
-                    break;
-                case Pulish.Bazar:
-                    url = "bazaar://details?id=" + Application.identifier;
-                    break;
-                default:
-                    break;
-            }
-
-            Application.OpenURL(url);
-
-        }
-        catch (Exception ex)
-        {
-
-            //lblerror.text = ex.Message;
-        }
-
-
-
     }
 
 

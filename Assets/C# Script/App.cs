@@ -1,3 +1,8 @@
+using Assets.C__Script;
+using Assets.C__Script.GameCore.Api;
+using Assets.DataLayer;
+using Assets.DataLayer.Infrastructure.Services;
+using Assets.Script;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,14 +12,19 @@ using UnityEngine.SceneManagement;
 public class App : MonoBehaviour
 {
     public GameController gameController;
-    public static App instance;
     public int maxScore;
     public int liveScore;
     public UnityEngine.UI.Text txt_Score;
+    public static App Instance;
+
 
     public AudioSource
         Explosion;
 
+    private void Start()
+    {
+        Instance = this;
+    }
     public void PlayExplosion()
     {
         Explosion.Play();
@@ -31,15 +41,6 @@ public class App : MonoBehaviour
 
     private bool isCoroutineExecuting;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        isCoroutineExecuting = false;
-        if (instance == null) { instance = this; }
-
-
-    }
-
     public void PlayNewGame()
     {
         SceneManager.LoadScene(1);
@@ -51,14 +52,22 @@ public class App : MonoBehaviour
         Can_PuseMenu.instance.Show();
         Time.timeScale = 0f;
 
-        if (maxScore > Progress.instance._playerInfo.Record)
-        {
-            Progress.instance.Save(maxScore);
-            //gameController.ChangeScore(maxScore);
-        }
-        API.instance.AddNewScore(liveScore);
+        CheckRecordAndSave();
 
     }
+
+    private void CheckRecordAndSave()
+    {
+        var plyer = ApplicationServices.playerInfoService.GetPlayerInfo();
+
+        if (maxScore > plyer.Record)
+        {
+            plyer.Record = maxScore;
+            ApplicationServices.playerInfoService.UpdatePlayerInfo(plyer);
+            BinoGameServiceApi_LeaderBoard.Instance.Api_AddScoreToLeaderBord();
+        }
+    }
+
     internal void Resume()
     {
         Time.timeScale = 1f;
@@ -102,13 +111,7 @@ public class App : MonoBehaviour
 
     internal void SaveData()
     {
-        if (maxScore > Progress.instance._playerInfo.Record)
-        {
-            Progress.instance.Save(maxScore);
-            //gameController.ChangeScore(maxScore);
-        }
-
-        //API.instance.AddNewScore(liveScore);
+        CheckRecordAndSave();
     }
 
     internal void ChangeTxtScore(int score)
@@ -117,8 +120,7 @@ public class App : MonoBehaviour
         if (liveScore > maxScore)
         {
             maxScore = liveScore;
-            txt_Score.text = String.Format("Score : {0} m", score);
-
+            txt_Score.text = $"{score} m";
         }
 
 
