@@ -12,7 +12,15 @@ namespace Assets.C__Script.GameCore.Api.Models
     //  "sysName": "string",
     //  "score": 0
     //}
-    [Serializable]
+
+  //  [
+  //{
+  //  "userId": "665798a97f7b4edf5e4412c2",
+  //  "sysName": "Player_3948",
+  //  "score": 111,
+  //  "id": "66579da8eb2030790ba1d0a7"
+  //}]
+[Serializable]
     public class Api_LeaderBoard
     {
         public string id;

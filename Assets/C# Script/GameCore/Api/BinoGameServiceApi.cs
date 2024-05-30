@@ -32,7 +32,7 @@ namespace Assets.C__Script.GameCore.Api
             CheckRegisterAndFillToken();
         }
 
-        public IEnumerator WebRequest(UnityWebRequest unityWeb, Action<string> OnSuccess, Action<string> OnFail = null, bool AuthorizationRequest = false)
+        public IEnumerator WebRequest(UnityWebRequest unityWeb, Action OnSuccess, Action OnFail = null, bool AuthorizationRequest = false)
         {
             unityWeb.SetRequestHeader("accept", "*/*");
             unityWeb.SetRequestHeader("Content-Type", "application/json");
@@ -54,7 +54,7 @@ namespace Assets.C__Script.GameCore.Api
                 if (unityWeb.responseCode >= 200 && unityWeb.responseCode <= 204)
                 {
                     Debug.Log("Received: " + unityWeb.downloadHandler.text);
-                    OnSuccess.Invoke(unityWeb.downloadHandler.text);
+                    OnSuccess.Invoke();
                 }
                 else if (unityWeb.responseCode == 401)
                 {
@@ -62,11 +62,11 @@ namespace Assets.C__Script.GameCore.Api
                     if (AuthorizationRequest == true)
                         Api_RefreshToken();
 
-                    OnFail?.Invoke(unityWeb.downloadHandler.text);
+                    OnFail?.Invoke();
                 }
                 else
                 {
-                    OnFail?.Invoke(unityWeb.downloadHandler.text);
+                    OnFail?.Invoke();
                 }
 
             }
@@ -111,7 +111,8 @@ namespace Assets.C__Script.GameCore.Api
                 uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
 
 
-                StartCoroutine(WebRequest(uwr, delegate (string res)
+                StartCoroutine(WebRequest(uwr,
+                    delegate ()
                 {
                     var registeredPlayer = JsonUtility.FromJson<Api_Login>(uwr.downloadHandler.text);
                     player.ServerPlayerId = registeredPlayer.id;
@@ -142,7 +143,8 @@ namespace Assets.C__Script.GameCore.Api
             uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
 
 
-            StartCoroutine(WebRequest(uwr, delegate (string res)
+            StartCoroutine(WebRequest(uwr, 
+                delegate
             {
                 var api_token = JsonUtility.FromJson<Api_Token>(uwr.downloadHandler.text);
 
@@ -173,7 +175,8 @@ namespace Assets.C__Script.GameCore.Api
             uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
 
 
-            StartCoroutine(WebRequest(uwr, delegate (string res)
+            StartCoroutine(WebRequest(uwr, 
+                delegate
             {
                 var api_RefreshToken = JsonUtility.FromJson<Api_RefreshToken>(uwr.downloadHandler.text);
 
@@ -187,6 +190,10 @@ namespace Assets.C__Script.GameCore.Api
                 tokenIsReady = true;
 
                 Debug.Log($"Get new refresh token successfully and api is ready token {token}");
+            },
+            delegate
+            {
+                Debug.Log($"Api_RefreshToken fail uwr.responseCode : {uwr.responseCode}");
             }));
         }
     }

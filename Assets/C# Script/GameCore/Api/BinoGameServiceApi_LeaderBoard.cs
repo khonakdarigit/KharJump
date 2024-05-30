@@ -10,12 +10,14 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine.Networking;
 using UnityEngine;
 using System.Collections;
+using Assets.DataLayer.Infrastructure;
 
 namespace Assets.C__Script.GameCore.Api
 {
     public class BinoGameServiceApi_LeaderBoard : Singleton<BinoGameServiceApi_LeaderBoard>
     {
         private string apiUrl = BinoGameServiceApi.apiUrl;
+        public static bool leaderBoardIsRady = false;
 
         private void Start()
         {
@@ -30,6 +32,8 @@ namespace Assets.C__Script.GameCore.Api
                 yield return new WaitUntil(() => BinoGameServiceApi.tokenIsReady);
 
             Debug.Log($"BinoGameServiceApi.tokenIsReady after {BinoGameServiceApi.tokenIsReady}");
+
+
             Api_AddScoreToLeaderBord();
         }
 
@@ -57,21 +61,54 @@ namespace Assets.C__Script.GameCore.Api
 
 
                     StartCoroutine(BinoGameServiceApi.Instance.WebRequest(uwr,
-                        delegate (string res)
-                    {
-
-
-                    },
-                        delegate (string failMsg)
-                    {
-                        Debug.Log($"request {url} : failMsg{failMsg}");
-                    }, true));
+                        delegate
+                        {
+                            Api_GetLeaderBord();
+                        },
+                        delegate
+                        {
+                            Debug.Log($"request {url} : failMsg{uwr.responseCode}");
+                        }, true));
                 }
                 catch (Exception ex)
                 {
                     Debug.Log("Api_AddScoreToLeaderBord Request Error: " + ex.Message);
                 }
         }
+        public void Api_GetLeaderBord()
+        {
+            if (BinoGameServiceApi.tokenIsReady)
+                try
+                {
+                    var player = ApplicationServices.playerInfoService.GetPlayerInfo();
+
+                    var url = $"{apiUrl}api/Leaderboard";
+
+                    var uwr = new UnityWebRequest(url, "GET");
+                    uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+
+
+                    StartCoroutine(BinoGameServiceApi.Instance.WebRequest(uwr,
+                        delegate
+                        {
+                            Debug.Log(uwr.downloadHandler.text);
+                            var api_LeaderBoard = JsonUtility.FromJson<Api_LeaderBoardList>("{\"dataArray\":" + uwr.downloadHandler.text + "}");
+
+                            player.Setting.Api_LeaderBordData = uwr.downloadHandler.text;
+                            ApplicationServices.playerInfoService.UpdatePlayerInfo(player);
+                            leaderBoardIsRady = true;
+                        },
+                        delegate
+                        {
+                            Debug.Log($"request {url} failMsg : {uwr.responseCode}");
+                        }, true));
+                }
+                catch (Exception ex)
+                {
+                    Debug.Log("Api_GetLeaderBord Request Error: " + ex.Message);
+                }
+        }
+
 
     }
 }

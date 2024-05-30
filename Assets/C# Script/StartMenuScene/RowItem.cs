@@ -2,29 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.C__Script.StartMenuScene
 {
     public class RowItem : MonoBehaviour
     {
-        public string Number;
-        public string username;
-        public string Score;
 
-        public TMPro.TextMeshProUGUI txt_Number;
-        public TMPro.TextMeshProUGUI txt_Name;
-        public TMPro.TextMeshProUGUI txt_Score;
+        public Text txt_Number;
+        public Text txt_SysName;
+        public Text txt_Score;
 
 
         // Start is called before the first frame update
-        void Start()
+        public void Init(string Number, string SysName, string Score, bool thisMe)
         {
             txt_Number.text = Number;
-            txt_Name.text = username;
-            txt_Score.text = Score + " m";
+            txt_SysName.GetComponent<FixArabic3DText>().SetText(thisMe ? "YOU" : SysName);
+            txt_Score.text = Score;
+
+            if (thisMe)
+            {
+                gameObject.GetComponent<Image>().color = new Color(0.6226415f, 0.6226415f, 0.6226415f, 0.466f);
+            }
         }
+
+
 
         // Update is called once per frame
         void Update()

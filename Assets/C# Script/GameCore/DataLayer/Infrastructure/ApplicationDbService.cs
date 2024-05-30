@@ -20,13 +20,13 @@ namespace Assets.DataLayer.Infrastructure
 
         public ApplicationDbService()
         {
-            var config = new RealmConfiguration { SchemaVersion = 5 };
+            var config = new RealmConfiguration { SchemaVersion = 6 };
             _realm = Realm.GetInstance(config);
 
 
             PlayerInfo = new GenericRepository<PlayerInfo>(_realm);
 
-            //databaseReset();
+            databaseReset();
             SeedDataInitialize();
         }
 
