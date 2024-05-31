@@ -24,6 +24,7 @@ public class App : MonoBehaviour
     private void Start()
     {
         Instance = this;
+        Canvas_FadeAndRun.Instance.FadIn();
     }
     public void PlayExplosion()
     {

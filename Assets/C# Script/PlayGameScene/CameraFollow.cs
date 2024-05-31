@@ -13,23 +13,31 @@ public class CameraFollow : MonoBehaviour
     private bool followDonkeyOnGameOver = false;
     public bool isActive;
 
-    private void Start()
+    private Vector3 _camera_TargetPosition;
+    private Vector3 velocity = Vector3.zero;
+    [SerializeField] float smoothSpeed = 0.220f;
+
+    private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
+        instance = this;
+
 
         isActive = true;
     }
-    private void FixedUpdate()
+
+    private void Start()
+    {
+
+
+    }
+    private void Update()
     {
         if (isActive)
         {
             // Change position with Donkey
             if (doodlePos.position.y > transform.position.y)
             {
-                transform.position = new Vector3(transform.position.x, doodlePos.position.y, transform.position.z);
+                _camera_TargetPosition = new Vector3(transform.position.x, doodlePos.position.y, transform.position.z);
             }
             else
             {
@@ -40,7 +48,7 @@ public class CameraFollow : MonoBehaviour
                         additionY -= camaraSpeedFollowDonkeyAfterGameOver;
                         additionY = additionY < 0 ? 0 : additionY;
                     }
-                    transform.position = new Vector3(transform.position.x, doodlePos.position.y + additionY, transform.position.z);
+                    _camera_TargetPosition = new Vector3(transform.position.x, doodlePos.position.y + additionY, transform.position.z);
                 }
                 else
                 {
@@ -48,6 +56,11 @@ public class CameraFollow : MonoBehaviour
                 }
             }
         }
+    }
+    private void FixedUpdate()
+    {
+        if (_camera_TargetPosition != null)
+            transform.position = Vector3.SmoothDamp(transform.position, _camera_TargetPosition, ref velocity, smoothSpeed);
     }
 
     internal void FollowDonkeyOnGameOver()

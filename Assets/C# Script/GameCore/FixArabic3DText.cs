@@ -28,10 +28,13 @@ public class FixArabic3DText : MonoBehaviour
         Text textMesh = gameObject.GetComponent<UnityEngine.UI.Text>();
         textMesh.text = text;
         if (StringIsPersian(text))
+        {
             textMesh.font = Resources.Load<Font>("Fonts/segoeui");
-        string fixedText = ArabicFixer.Fix(textMesh.text, showTashkeel, useHinduNumbers);
+            string fixedText = ArabicFixer.Fix(textMesh.text, showTashkeel, useHinduNumbers);
 
-        gameObject.GetComponent<Text>().text = fixedText;
+            gameObject.GetComponent<Text>().text = fixedText;
+        }
+
     }
 
 

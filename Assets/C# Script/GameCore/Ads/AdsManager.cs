@@ -1,4 +1,5 @@
-﻿using Assets.Script.Ads.Tapsell;
+﻿using Assets.Script;
+using Assets.Script.Ads.Tapsell;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,11 +9,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-public class AdsManager : MonoBehaviour
+public class AdsManager : Singleton<AdsManager>
 {
-
-    public static AdsManager instance;
-
     static public AdsType Option_Ads_Interstitial_Ad_Type = AdsType.Tapsell;
     static public AdsType Option_Ads_Rewarded_Ad_Type = AdsType.Tapsell;
     static public AdsType Option_Ads_Banner_Ad_Type = AdsType.Tapsell;
@@ -25,12 +23,7 @@ public class AdsManager : MonoBehaviour
 
     private void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-            StartCoroutine(StartAfterDB());
-            DontDestroyOnLoad(this);
-        }
+        StartCoroutine(StartAfterDB());
     }
 
     IEnumerator StartAfterDB()
@@ -264,6 +257,26 @@ public class AdsManager : MonoBehaviour
         }
 
 
+    }
+
+    public void MyAdAndRun(Action value)
+    {
+        if (GameData.PlayCount == AdsManager.Option_ShowInterstitialPerGame)
+        {
+            GameData.PlayCount = 0;
+
+            if (InterstitialAdIsReady(InterstitialType.banner))
+                ShowInterstitialAd(delegate
+                {
+                    value?.Invoke();
+                }, InterstitialType.banner);
+            else
+                value?.Invoke();
+        }
+        else
+        {
+            value?.Invoke();
+        }
     }
 
 }

@@ -26,7 +26,7 @@ namespace Assets.DataLayer.Infrastructure
 
             PlayerInfo = new GenericRepository<PlayerInfo>(_realm);
 
-            databaseReset();
+            //databaseReset();
             SeedDataInitialize();
         }
 

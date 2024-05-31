@@ -17,7 +17,7 @@ public class BlackHole : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var player = collision.gameObject.GetComponent<Donky>();
-        if (player != null && !BlackHoleIsOn)
+        if (player != null && !BlackHoleIsOn && player.staus != Donky.DonkeyStaus.InRocketFly)
         {
             BlackHoleIsOn = true;
             CameraFollow.instance.isActive = false;

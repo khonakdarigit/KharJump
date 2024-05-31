@@ -14,15 +14,19 @@ public class Can_StartPage : MonoBehaviour
     public static PolishFor polishFor = PolishFor.Myket;
 
     private float time;
-    private Action _FadeAndLoadGame;
-
 
     // Start is called before the first frame update
     void Start()
     {
+        Canvas_FadeAndRun.Instance.FadIn();
+
+
         txtScore.text = string.Format("Your Score: {0} m", ApplicationServices.playerInfoService.GetPlayerInfo().Record);
         txt_Version.text = "Version : " + Application.version.ToString();
+
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -34,46 +38,16 @@ public class Can_StartPage : MonoBehaviour
     {
         GameController.Instance.ButtonClickSound();
 
-        Action doThat = new Action(delegate ()
+        Canvas_FadeAndRun.Instance.FadeOutAndRun(delegate
         {
-            GameData.PlayCount++;
-            SceneManager.LoadScene(1);
-
+            AdsManager.Instance.MyAdAndRun(delegate ()
+             {
+                 GameData.PlayCount++;
+                 SceneManager.LoadScene(1);
+             });
         });
 
-
-        MyAdAndRun(delegate ()
-        {
-            doThat.Invoke();
-
-        });
     }
-
-    private void MyAdAndRun(Action value)
-    {
-        _FadeAndLoadGame = value;
-        if (GameData.PlayCount == AdsManager.Option_ShowInterstitialPerGame)
-        {
-            GameData.PlayCount = 0;
-
-            if (AdsManager.instance.InterstitialAdIsReady(Assets.Script.Ads.Tapsell.InterstitialType.banner))
-                AdsManager.instance.ShowInterstitialAd(OnShowComplete, Assets.Script.Ads.Tapsell.InterstitialType.banner);
-            else
-                _FadeAndLoadGame?.Invoke();
-        }
-        else
-        {
-            _FadeAndLoadGame?.Invoke();
-        }
-
-    }
-    public void OnShowComplete(bool ShowComplete)
-    {
-        Log.Add("OnShowComplete");
-        //Progress.instance.AddLogWithApi($"{this.GetType().Name}/{MethodBase.GetCurrentMethod().Name}", logLevel.Info, $"ShowInterstitialAd Complete status :{ShowComplete}");
-        _FadeAndLoadGame?.Invoke();
-    }
-
 
     public void Contact()
     {

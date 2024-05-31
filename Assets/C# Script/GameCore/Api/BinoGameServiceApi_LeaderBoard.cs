@@ -42,6 +42,7 @@ namespace Assets.C__Script.GameCore.Api
             if (BinoGameServiceApi.tokenIsReady)
                 try
                 {
+                    leaderBoardIsRady = false;
                     var player = ApplicationServices.playerInfoService.GetPlayerInfo();
 
                     Api_LeaderBoard api_LeaderBoard = new Api_LeaderBoard()
@@ -82,7 +83,7 @@ namespace Assets.C__Script.GameCore.Api
                 {
                     var player = ApplicationServices.playerInfoService.GetPlayerInfo();
 
-                    var url = $"{apiUrl}api/Leaderboard";
+                    var url = $"{apiUrl}api/Leaderboard/ForUser?TopBottomCount=5";
 
                     var uwr = new UnityWebRequest(url, "GET");
                     uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();

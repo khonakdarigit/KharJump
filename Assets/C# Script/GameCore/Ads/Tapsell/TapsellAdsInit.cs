@@ -33,8 +33,8 @@ public class TapsellAdsInit : MonoBehaviour
 
                 //if (GameManager.instance == null)
                 //    yield return new WaitUntil(() => GameManager.instance == null);
-                if (AdsManager.instance == null)
-                    yield return new WaitUntil(() => AdsManager.instance == null);
+                if (AdsManager.Instance == null)
+                    yield return new WaitUntil(() => AdsManager.Instance == null);
 
                 try
 

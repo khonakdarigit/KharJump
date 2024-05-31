@@ -21,7 +21,7 @@ namespace Assets.C__Script.StartMenuScene
         public void Init(string Number, string SysName, string Score, bool thisMe)
         {
             txt_Number.text = Number;
-            txt_SysName.GetComponent<FixArabic3DText>().SetText(thisMe ? "YOU" : SysName);
+            txt_SysName.GetComponent<FixArabic3DText>().SetText(thisMe ? $"YOU ({SysName})" : SysName);
             txt_Score.text = Score;
 
             if (thisMe)

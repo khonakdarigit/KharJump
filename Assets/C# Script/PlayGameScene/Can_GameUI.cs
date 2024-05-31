@@ -13,12 +13,9 @@ public class Can_GameUI : MonoBehaviour
     void Start()
     {
 
-        if (instance == null)
-        {
-            toNeverSleepScreeTimeOut();
-            instance = this;
-        }
 
+        toNeverSleepScreeTimeOut();
+        instance = this;
 
     }
 

@@ -38,10 +38,9 @@ public class PlatformGenerate : MonoBehaviour
     {
         gamelevel = new GameLeveData();
         DedPlatformCounter = 0;
-        if (instance == null)
-        {
-            instance = this;
-        }
+
+        instance = this;
+
 
         CameraSize = Camera.main.orthographicSize;
 

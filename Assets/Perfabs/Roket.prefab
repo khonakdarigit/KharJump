@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 3654571912142911073}
   - component: {fileID: 2684628370864447004}
   - component: {fileID: 1844200961895106807}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Roket
   m_TagString: Untagged
   m_Icon: {fileID: 0}

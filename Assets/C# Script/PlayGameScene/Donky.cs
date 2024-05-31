@@ -47,7 +47,7 @@ public class Donky : MonoBehaviour
 
     void Start()
     {
-        if (instance == null) { instance = this; }
+        instance = this;
 
         isCoroutineExecuting = false;
 

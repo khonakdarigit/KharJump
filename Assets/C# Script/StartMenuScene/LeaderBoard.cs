@@ -13,6 +13,8 @@ public class LeaderBoard : MonoBehaviour
     [SerializeField] GameObject rowItemPrefabs;
     [SerializeField] GameObject panel;
     [SerializeField] GameObject content;
+    [SerializeField] GameObject waitingNetwork;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,20 +23,25 @@ public class LeaderBoard : MonoBehaviour
 
     IEnumerator AfterServiceInit()
     {
+        waitingNetwork.SetActive(true);
+        CleanContent();
+
         if (!ApplicationServices.ServiceIsReady)
             yield return new WaitUntil(() => !ApplicationServices.ServiceIsReady);
 
-        if (ApplicationServices.playerInfoService.GetPlayerInfo().Setting.Api_LeaderBordData != null)
+
+        if (!BinoGameServiceApi_LeaderBoard.leaderBoardIsRady)
+        {
+            Debug.Log($"BinoGameServiceApi_LeaderBoard.leaderBoardIsRady : {BinoGameServiceApi_LeaderBoard.leaderBoardIsRady}");
+            yield return new WaitUntil(() => BinoGameServiceApi_LeaderBoard.leaderBoardIsRady);
+            Debug.Log($"BinoGameServiceApi_LeaderBoard.leaderBoardIsRady : {BinoGameServiceApi_LeaderBoard.leaderBoardIsRady}");
             RefreshData();
+        }
         else
         {
-            if (!BinoGameServiceApi_LeaderBoard.leaderBoardIsRady)
-            {
-                yield return new WaitUntil(() => BinoGameServiceApi_LeaderBoard.leaderBoardIsRady);
-                RefreshData();
-            }
-
+            RefreshData();
         }
+
     }
 
     ScrollRect scrollRect;
@@ -51,11 +58,35 @@ public class LeaderBoard : MonoBehaviour
         contentPanel.anchoredPosition =
                 (Vector2)scrollRect.transform.InverseTransformPoint(contentPanel.position)
                 - (Vector2)scrollRect.transform.InverseTransformPoint(target.position);
+
+
+        waitingNetwork.SetActive(false);
     }
 
     public void RefreshData()
     {
 
+        var player = ApplicationServices.playerInfoService.GetPlayerInfo();
+        if (player.Setting.Api_LeaderBordData != null)
+        {
+            var api_LeaderBoard = JsonUtility.FromJson<Api_LeaderBoardList>("{\"dataArray\":" + player.Setting.Api_LeaderBordData + "}");
+
+            PlayerRow = null;
+            foreach (var item in api_LeaderBoard.dataArray)
+            {
+                bool ThisMe = player.ServerPlayerId == item.userId;
+                var rowItem = Instantiate(rowItemPrefabs, content.transform);
+                rowItem.GetComponent<RowItem>().Init($"#{item.index}", item.sysName, $"{item.score} m", ThisMe);
+                if (ThisMe)
+                    PlayerRow = rowItem;
+            }
+            StartCoroutine(ScrollToMe());
+        }
+
+    }
+
+    private void CleanContent()
+    {
         try
         {
             for (var i = content.transform.childCount - 1; i >= 0; i--)
@@ -68,26 +99,6 @@ public class LeaderBoard : MonoBehaviour
             Debug.LogException(ex);
             ///throw;
         }
-
-
-        var player = ApplicationServices.playerInfoService.GetPlayerInfo();
-        if (player.Setting.Api_LeaderBordData != null)
-        {
-            var api_LeaderBoard = JsonUtility.FromJson<Api_LeaderBoardList>("{\"dataArray\":" + player.Setting.Api_LeaderBordData + "}");
-
-            int index = 0;
-            PlayerRow = null;
-            foreach (var item in api_LeaderBoard.dataArray)
-            {
-                bool ThisMe = player.ServerPlayerId == item.userId;
-                var rowItem = Instantiate(rowItemPrefabs, content.transform);
-                rowItem.GetComponent<RowItem>().Init($"#{++index}", item.sysName, $"{item.score} m", ThisMe);
-                if (ThisMe)
-                    PlayerRow = rowItem;
-            }
-            StartCoroutine(ScrollToMe());
-        }
-
     }
 
     IEnumerator ScrollToMe()

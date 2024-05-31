@@ -10,7 +10,7 @@ public class Can_PuseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (instance == null) { instance = this; }
+        instance = this;
     }
 
     // Update is called once per frame
@@ -44,7 +44,10 @@ public class Can_PuseMenu : MonoBehaviour
     {
         GameController.Instance.ButtonClickSound();
 
-        App.Instance.Resume();
-        App.Instance.Show_Menu();
+        Canvas_FadeAndRun.Instance.FadeOutAndRun(delegate
+        {
+            App.Instance.Resume();
+            App.Instance.Show_Menu();
+        });
     }
 }

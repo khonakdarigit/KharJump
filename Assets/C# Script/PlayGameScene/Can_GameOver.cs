@@ -17,7 +17,7 @@ public class Can_GameOver : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (instance == null) { instance = this; }
+        instance = this;
     }
 
     // Update is called once per frame
@@ -30,47 +30,17 @@ public class Can_GameOver : MonoBehaviour
     {
         GameController.Instance.ButtonClickSound();
 
-        Action doThat = new Action(delegate ()
+        Canvas_FadeAndRun.Instance.FadeOutAndRun(delegate
         {
-            Hide();
-            App.Instance.Resume();
-            App.Instance.PlayNewGame();
-            GameData.PlayCount++;
-        });
-
-
-        MyAdAndRun(delegate ()
-        {
-            doThat.Invoke();
-
+            AdsManager.Instance.MyAdAndRun(delegate
+            {
+                Hide();
+                App.Instance.Resume();
+                App.Instance.PlayNewGame();
+                GameData.PlayCount++;
+            });
         });
     }
-
-    private void MyAdAndRun(Action value)
-    {
-        _FadeAndLoadGame = value;
-        if (GameData.PlayCount == AdsManager.Option_ShowInterstitialPerGame)
-        {
-            GameData.PlayCount = 0;
-
-            if (AdsManager.instance.InterstitialAdIsReady(Assets.Script.Ads.Tapsell.InterstitialType.banner))
-                AdsManager.instance.ShowInterstitialAd(OnShowComplete, Assets.Script.Ads.Tapsell.InterstitialType.banner);
-            else
-                _FadeAndLoadGame?.Invoke();
-        }
-        else
-        {
-            _FadeAndLoadGame?.Invoke();
-        }
-
-    }
-    public void OnShowComplete(bool ShowComplete)
-    {
-        Log.Add("OnShowComplete");
-        //Progress.instance.AddLogWithApi($"{this.GetType().Name}/{MethodBase.GetCurrentMethod().Name}", logLevel.Info, $"ShowInterstitialAd Complete status :{ShowComplete}");
-        _FadeAndLoadGame?.Invoke();
-    }
-
 
 
     //btn_BackToManu
@@ -79,8 +49,11 @@ public class Can_GameOver : MonoBehaviour
     {
         GameController.Instance.ButtonClickSound();
 
-        App.Instance.Resume();
-        App.Instance.Show_Menu();
+        Canvas_FadeAndRun.Instance.FadeOutAndRun(delegate
+        {
+            App.Instance.Resume();
+            App.Instance.Show_Menu();
+        });
     }
     internal void Show()
     {

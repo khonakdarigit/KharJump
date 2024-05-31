@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-
 public class Mirror : MonoBehaviour
 {
     public bool OnWork { get; private set; }

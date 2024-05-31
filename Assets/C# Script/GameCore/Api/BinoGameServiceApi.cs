@@ -13,7 +13,10 @@ namespace Assets.C__Script.GameCore.Api
     public class BinoGameServiceApi : Singleton<BinoGameServiceApi>
     {
         private string _gameName;
-        public static string apiUrl = "https://localhost:7208/";
+
+        //public static string apiUrl = "https://localhost:7208/";
+        public static string apiUrl = "https://binogamesservice.bsite.net/";
+
         private string token;
         private string _apiPass = "*A*A*A*LoginPass*A*A*A*A";
         public static bool tokenIsReady = false;
@@ -194,6 +197,10 @@ namespace Assets.C__Script.GameCore.Api
             delegate
             {
                 Debug.Log($"Api_RefreshToken fail uwr.responseCode : {uwr.responseCode}");
+                if (uwr.responseCode == 401)
+                {
+                    Api_Login();
+                }
             }));
         }
     }
