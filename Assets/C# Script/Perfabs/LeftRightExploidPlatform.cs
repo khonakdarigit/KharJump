@@ -40,7 +40,7 @@ public class LeftRightExploidPlatform : MonoBehaviour
 
         StartCoroutine(ExecuteAfterTime(t, () =>
         {
-            App.Instance.PlayExplosion();
+            PlayGameScene.Instance.PlayExplosion();
             Destroy(gameObject);
         }));
 

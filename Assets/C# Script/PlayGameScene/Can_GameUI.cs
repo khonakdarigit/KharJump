@@ -37,7 +37,7 @@ public class Can_GameUI : MonoBehaviour
     public void btn_Pause()
     {
         GameController.Instance.ButtonClickSound();
-        App.Instance.Pause();
+        PlayGameScene.Instance.Pause();
     }
 
 

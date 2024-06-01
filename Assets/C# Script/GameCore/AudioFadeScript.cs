@@ -5,6 +5,19 @@ using UnityEngine.SocialPlatforms;
 
 public class AudioFadeScript : MonoBehaviour
 {
+    public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
+    {
+        float currentTime = 0;
+        float start = audioSource.volume;
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            yield return null;
+        }
+        yield break;
+    }
+
     public static IEnumerator FadeOut(AudioSource audioSource, float FadeTimeDuration, float toVolume)
     {
 
@@ -27,7 +40,7 @@ public class AudioFadeScript : MonoBehaviour
 
     public static IEnumerator FadeIn(AudioSource audioSource, float FadeTimeDuration, float toVolume)
     {
-        float startVolume = 0.2f;
+        float stepVolume = 0.2f;
 
         if (!audioSource.isPlaying)
         {
@@ -36,7 +49,7 @@ public class AudioFadeScript : MonoBehaviour
         }
         while (audioSource.volume < toVolume)
         {
-            audioSource.volume += startVolume * Time.deltaTime / FadeTimeDuration;
+            audioSource.volume += stepVolume * Time.deltaTime / FadeTimeDuration;
 
             yield return null;
         }

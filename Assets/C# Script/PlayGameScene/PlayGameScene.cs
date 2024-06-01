@@ -9,13 +9,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class App : MonoBehaviour
+public class PlayGameScene : MonoBehaviour
 {
     public GameController gameController;
     public int maxScore;
     public int liveScore;
     public UnityEngine.UI.Text txt_Score;
-    public static App Instance;
+    public static PlayGameScene Instance;
 
 
     public AudioSource

@@ -25,11 +25,6 @@ public class CameraFollow : MonoBehaviour
         isActive = true;
     }
 
-    private void Start()
-    {
-
-
-    }
     private void Update()
     {
         if (isActive)
@@ -55,12 +50,16 @@ public class CameraFollow : MonoBehaviour
                     additionY = transform.position.y - doodlePos.position.y;
                 }
             }
+
+            if (_camera_TargetPosition != null)
+                transform.position = Vector3.SmoothDamp(transform.position, _camera_TargetPosition, ref velocity, smoothSpeed);
         }
+
+       
     }
     private void FixedUpdate()
     {
-        if (_camera_TargetPosition != null)
-            transform.position = Vector3.SmoothDamp(transform.position, _camera_TargetPosition, ref velocity, smoothSpeed);
+      
     }
 
     internal void FollowDonkeyOnGameOver()

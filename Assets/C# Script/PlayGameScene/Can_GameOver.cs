@@ -12,7 +12,6 @@ public class Can_GameOver : MonoBehaviour
     public static Can_GameOver instance;
     public GameObject panel;
     public Text txtScore;
-    private Action _FadeAndLoadGame;
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +34,8 @@ public class Can_GameOver : MonoBehaviour
             AdsManager.Instance.MyAdAndRun(delegate
             {
                 Hide();
-                App.Instance.Resume();
-                App.Instance.PlayNewGame();
+                PlayGameScene.Instance.Resume();
+                PlayGameScene.Instance.PlayNewGame();
                 GameData.PlayCount++;
             });
         });
@@ -51,15 +50,15 @@ public class Can_GameOver : MonoBehaviour
 
         Canvas_FadeAndRun.Instance.FadeOutAndRun(delegate
         {
-            App.Instance.Resume();
-            App.Instance.Show_Menu();
+            PlayGameScene.Instance.Resume();
+            PlayGameScene.Instance.Show_Menu();
         });
     }
     internal void Show()
     {
         Can_GameUI.instance.toSystemSetingScreeTimeOut();
         panel.SetActive(true);
-        txtScore.text = String.Format("Your score: {0}\nYour high score: {1}", App.Instance.maxScore, ApplicationServices.playerInfoService.GetPlayerInfo().Record);
+        txtScore.text = String.Format("Your score: {0}\nYour high score: {1}", PlayGameScene.Instance.maxScore, ApplicationServices.playerInfoService.GetPlayerInfo().Record);
     }
     internal void Hide()
     {

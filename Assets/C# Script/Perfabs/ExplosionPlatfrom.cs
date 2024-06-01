@@ -24,7 +24,7 @@ public class ExplosionPlatfrom : MonoBehaviour
 
         StartCoroutine(ExecuteAfterTime(t, () =>
         {
-            App.Instance.PlayExplosion();
+            PlayGameScene.Instance.PlayExplosion();
             Destroy(gameObject);
         }));
 

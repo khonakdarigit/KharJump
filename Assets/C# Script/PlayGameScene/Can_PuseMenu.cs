@@ -24,7 +24,7 @@ public class Can_PuseMenu : MonoBehaviour
         GameController.Instance.ButtonClickSound();
 
         Hide();
-        App.Instance.Resume();
+        PlayGameScene.Instance.Resume();
     }
 
     internal void Show()
@@ -46,8 +46,8 @@ public class Can_PuseMenu : MonoBehaviour
 
         Canvas_FadeAndRun.Instance.FadeOutAndRun(delegate
         {
-            App.Instance.Resume();
-            App.Instance.Show_Menu();
+            PlayGameScene.Instance.Resume();
+            PlayGameScene.Instance.Show_Menu();
         });
     }
 }

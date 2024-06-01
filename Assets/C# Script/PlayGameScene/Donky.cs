@@ -63,14 +63,8 @@ public class Donky : MonoBehaviour
             horizantal = Input.acceleration.x;
         }
 
-
-    }
-
-    void FixedUpdate()
-    {
         DoodleRigid.velocity = new Vector2(Input.acceleration.x * 15f, DoodleRigid.velocity.y);
 
-        App.Instance.ChangeTxtScore((int)DoodleRigid.position.y * 3);
 
         if (staus == DonkeyStaus.OnBlckHole)
         {
@@ -89,6 +83,12 @@ public class Donky : MonoBehaviour
 
 
         }
+    }
+
+    void FixedUpdate()
+    {
+        PlayGameScene.Instance.ChangeTxtScore((int)DoodleRigid.position.y * 3);
+
     }
 
     public void toJumpShape()
@@ -130,11 +130,11 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump;
                     gameObject.GetComponent<AudioSource>().Play();
                     toJumpShape();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -158,11 +158,11 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump;
                     gameObject.GetComponent<AudioSource>().Play();
                     toJumpShape();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -177,11 +177,11 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump;
                     gameObject.GetComponent<AudioSource>().Play();
                     toJumpShape();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -196,11 +196,11 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump;
                     gameObject.GetComponent<AudioSource>().Play();
                     toJumpShape();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -215,12 +215,12 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump;
                     gameObject.GetComponent<AudioSource>().Play();
                     JumpHide_Platform.Delete();
                     toJumpShape();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -235,12 +235,12 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump;
                     gameObject.GetComponent<AudioSource>().Play();
                     LeftRightJumpHide_Platform.Delete();
                     toJumpShape();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -255,13 +255,13 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InCoilJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump * 2;
                     toJumpShape();
                     JumpWithCoil.Play();
                     coil.toOpenShape();
 
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.6f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.6f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -300,14 +300,14 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InPolingJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump * 2.5f;
                     toJumpShape();
                     poling.toOpenShape();
                     anim.SetTrigger("rote");
                     JumpWithPoling.Play();
 
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.6f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.6f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -321,12 +321,12 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump * 1.5f;
                     AS_SlapingLeg.Play();
                     toJumpShape();
                     oneEyeMonester.Drop();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -338,12 +338,12 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump * 1.5f;
                     AS_SlapingLeg.Play();
                     toJumpShape();
                     FourEyeMonester.Drop();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -355,12 +355,12 @@ public class Donky : MonoBehaviour
                 if (collision.relativeVelocity.y > 0)
                 {
                     staus = DonkeyStaus.InSimpleJump;
-                    App.Instance.ChangeStatus(staus.ToString());
+                    PlayGameScene.Instance.ChangeStatus(staus.ToString());
                     DoodleRigid.velocity = Vector2.up * forcejump * 1.5f;
                     AS_SlapingLeg.Play();
                     toJumpShape();
                     beeMonester.Drop();
-                    StartCoroutine(App.Instance.ExecuteAfterTime(0.4f, () =>
+                    StartCoroutine(PlayGameScene.Instance.ExecuteAfterTime(0.4f, () =>
                     {
                         staus = DonkeyStaus.Normal;
                         toNormalShape();
@@ -376,11 +376,11 @@ public class Donky : MonoBehaviour
         var deadZone = collision.GetComponent<DeadZone>();
         if (deadZone != null)
         {
-            if (!App.Instance.IsGameOver)
+            if (!PlayGameScene.Instance.IsGameOver)
             {
                 DropSound.Play();
                 gameObject.GetComponent<CapsuleCollider2D>().isTrigger = false;
-                App.Instance.GameOver();
+                PlayGameScene.Instance.GameOver();
             }
         }
 
