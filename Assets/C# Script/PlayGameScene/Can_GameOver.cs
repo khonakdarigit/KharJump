@@ -34,9 +34,9 @@ public class Can_GameOver : MonoBehaviour
             AdsManager.Instance.MyAdAndRun(delegate
             {
                 Hide();
+                GameData.PlayCount++;
                 PlayGameScene.Instance.Resume();
                 PlayGameScene.Instance.PlayNewGame();
-                GameData.PlayCount++;
             });
         });
     }

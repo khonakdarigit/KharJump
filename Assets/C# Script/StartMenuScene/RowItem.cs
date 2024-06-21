@@ -26,7 +26,7 @@ namespace Assets.C__Script.StartMenuScene
 
             if (thisMe)
             {
-                gameObject.GetComponent<Image>().color = new Color(0.6226415f, 0.6226415f, 0.6226415f, 0.466f);
+                gameObject.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.466f);
             }
         }
 

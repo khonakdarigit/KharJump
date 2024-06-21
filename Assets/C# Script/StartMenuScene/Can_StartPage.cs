@@ -11,7 +11,7 @@ public class Can_StartPage : MonoBehaviour
     public UnityEngine.UI.Text txtScore;
     public UnityEngine.UI.Button btn_Play_obg;
     public UnityEngine.UI.Text txt_Version;
-    public static PolishFor polishFor = PolishFor.Bazar;
+    public static PolishFor polishFor = PolishFor.Myket;
 
     [SerializeField] AudioSource audioSource_back;
     private float time;
@@ -28,19 +28,17 @@ public class Can_StartPage : MonoBehaviour
 
     }
 
-
-
-    // Update is called once per frame
-    void Update()
+    public void ResetDB()
     {
-
+        ApplicationServices.dbService.databaseReset();
+        SceneManager.LoadScene(0);
     }
 
     public void btn_Play()
     {
-        StartCoroutine(AudioFadeScript.StartFade(audioSource_back, 0.2f, 0f));
-
         GameController.Instance.ButtonClickSound();
+
+        StartCoroutine(AudioFadeScript.StartFade(audioSource_back, 0.2f, 0f));
 
         Canvas_FadeAndRun.Instance.FadeOutAndRun(delegate
         {

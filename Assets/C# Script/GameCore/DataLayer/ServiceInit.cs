@@ -20,10 +20,4 @@ public class ServiceInit : Singleton<ServiceInit>
         Debug.Log($"" +
             $"ApplicationServices is ready >> Player ID : {ApplicationServices.playerInfoService.GetPlayerInfo()._id} ");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
