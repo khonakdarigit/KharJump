@@ -11,7 +11,7 @@ public class Can_StartPage : MonoBehaviour
     public UnityEngine.UI.Text txtScore;
     public UnityEngine.UI.Button btn_Play_obg;
     public UnityEngine.UI.Text txt_Version;
-    public static PolishFor polishFor = PolishFor.Myket;
+    public static PolishFor polishFor = PolishFor.Bazar;
 
     [SerializeField] AudioSource audioSource_back;
     private float time;
@@ -31,7 +31,6 @@ public class Can_StartPage : MonoBehaviour
     public void ResetDB()
     {
         ApplicationServices.dbService.databaseReset();
-        SceneManager.LoadScene(0);
     }
 
     public void btn_Play()

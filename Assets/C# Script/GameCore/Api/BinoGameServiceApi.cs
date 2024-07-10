@@ -197,7 +197,7 @@ namespace Assets.C__Script.GameCore.Api
             delegate
             {
                 Debug.Log($"Api_RefreshToken fail uwr.responseCode : {uwr.responseCode}");
-                if (uwr.responseCode == 401)
+                if (uwr.responseCode == 400)
                 {
                     Api_Login();
                 }
